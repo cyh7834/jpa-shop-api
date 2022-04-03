@@ -61,6 +61,17 @@ public class OrderQueryRepository {
         return orderIds;
     }
 
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                "select new jpabook.jpashop2.repository.order.query.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderPrice, oi.count)" +
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d" +
+                        " join o.orderItems oi" +
+                        " join oi.item i", OrderFlatDto.class)
+                .getResultList();
+    }
+
     /**
      * new 연산으로 dto로 조회 시 ~ToMany의 데이터는 가져올 수 없기 때문에 추가로 함수 작성.
      * */
